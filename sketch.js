@@ -244,3 +244,6 @@ Interact.prototype.show = function () {
   strokeWeight(2);
   point(this.pos.x, this.pos.y);
 };
+function windowResize(){
+  resizeCanvas(windowWidth, windowHeight)
+};
