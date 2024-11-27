@@ -16,7 +16,9 @@ let dia = 15; // diameter of interaction
 let randomPos = false; // starting positions - true or false
 let pointsDirection = "left"; // left right up down general
 let interactionDirection = -1; // between -1 and 1
-let soundEffect 
+let soundEffect;
+let images = []; // Array to hold images
+let imagesToDisplay = []; // Array to hold images to display when clicked
 
 let textPoints = [];
 let textPointsDuplicate = []; // Array for the duplicate particles
@@ -25,7 +27,12 @@ let textPointsDuplicate3 = []; // Array for the fourth duplicate particles
 
 function preload() {
   font = loadFont("AvenirNextLTPro-Demi.otf");
-  soundEffect = loadSound("click.mp3")
+  soundEffect = loadSound("click.mp3");
+
+  // Preload images (add paths to your images)
+  images.push(loadImage("image1.jpg"));
+  images.push(loadImage("image2.jpg"));
+  images.push(loadImage("image3.jpg"));
 }
 
 function setup() {
@@ -42,7 +49,7 @@ function setup() {
     sampleFactor: pointCount,
   });
 
-  // Generate points for the second duplicate text "contact"
+  // Generate points for the second duplicate text "work"
   let points3 = font.textToPoints("work", tposX1, tposY3, tSize, {
     sampleFactor: pointCount,
   });
@@ -151,6 +158,16 @@ function draw() {
     v.show();
     v.behaviors();
   }
+
+  // Display the images if selected
+  if (imagesToDisplay.length > 0) {
+    let offsetX = 50; // Spacing between images
+    for (let i = 0; i < imagesToDisplay.length; i++) {
+      imageMode(CENTER);
+      image(imagesToDisplay[i], width / 2 + offsetX, height / 2);
+      offsetX += 300; // Adjust the gap between images
+    }
+  }
 }
 
 // Interact class for particle behavior (same as before)
@@ -244,13 +261,23 @@ Interact.prototype.show = function () {
   point(this.pos.x, this.pos.y);
 };
 
-function windowResize(){
-  resizeCanvas(windowWidth, windowHeight)
-};
+function windowResize() {
+  resizeCanvas(windowWidth, windowHeight);
+  resizeCanvas(windowWidth, windowHeight);
+}
 
-function mouseDragged(){
-  if(mouseX > tposX1 && mouseX < tposX1 + tSize
-    && mouseY > tposY1 && mouseY < tposY4){
-    soundEffect.play()
-   } 
-  };
+function mousePressed() {
+  // Check if the mouse is within the bounds of the "work" text
+  if (mouseX > tposX1 && mouseX < tposX1 + tSize &&
+      mouseY > tposY3 && mouseY < tposY3 + tSize) {
+    soundEffect.play(); // Play sound on click
+    // Display all images in the center
+    imagesToDisplay = images; // All three images to be displayed
+  }
+}
+function mousePressed() {
+   if (mouseX > tposX1 && mouseY < tposY3 + tSize) {
+    // Display all images in the center
+    imagesToDisplay = images; // All three images to be displayed
+  }
+  }
